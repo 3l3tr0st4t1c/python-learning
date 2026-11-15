@@ -1,1 +1,1 @@
-# Na aula 1 Foi somente apresentação da matéria, sem conteúdos
+# Na aula 1 Foi somente apresentação da disciplina e avisos iniciais de semestre, sem conteúdos.
