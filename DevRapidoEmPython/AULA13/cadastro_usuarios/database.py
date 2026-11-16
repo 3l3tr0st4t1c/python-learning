@@ -45,7 +45,7 @@ class Database:
     def pesquisar_termo(self,nome:str):
         with self.conn:
            cursor=self.conn.execute(
-                "SELECT id, nome,email WHERE nome LIKE ?",(f"%{nome}%",)
+                "SELECT FROM usuarios id, nome,email WHERE nome LIKE ?",(f"%{nome}%",)
             )
         return cursor.fetchall()
 
