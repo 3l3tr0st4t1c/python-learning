@@ -3,6 +3,7 @@ def exemplo3():
         "esta é a primeira vez q o kaua bonito escreve\n"
         "Esta é a segunda linha do kaua lindo\n"
         "Esta é a 3 linha do kaua lindo\n"
+        "Kaua é gay\n"
     ]
     with open("exemplo_writelines.txt","w",encoding="utf-8")as arquivo:
         arquivo.writelines(linhas)
