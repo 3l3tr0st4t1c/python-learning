@@ -10,8 +10,8 @@ class SupriDeskApp:
     def __init__(self, root: tk.Tk) -> None:
         self.root = root
         self.root.title("SupriDesk - Gestão de Solicitações Internas")
-        self.root.geometry("920x560")
-        self.root.minsize(850, 500)
+        self.root.geometry("960x560")
+        self.root.minsize(920, 500)
 
         self.db = Database("solicitacoes.db")
         self.regras = RegrasNegocio(self.db)
@@ -22,38 +22,46 @@ class SupriDeskApp:
         self.root.protocol("WM_DELETE_WINDOW", self._ao_fechar)
 
     def _construir_interface(self) -> None:
-        # --- 1. Formulário de Cadastro ---
+        # --- 1. Formulário de Cadastro (2 Linhas) ---
         frame_cadastro = ttk.LabelFrame(self.root, text="Nova Solicitação", padding=10)
         frame_cadastro.pack(fill="x", padx=10, pady=(10, 5))
 
-        ttk.Label(frame_cadastro, text="Setor:").grid(row=0, column=0, sticky="w", padx=5)
-        self.entry_setor = ttk.Entry(frame_cadastro, width=22)
-        self.entry_setor.grid(row=0, column=1, padx=5)
+        # Linha 0: Setor e Material
+        ttk.Label(frame_cadastro, text="Setor:").grid(row=0, column=0, sticky="w", padx=5, pady=5)
+        self.entry_setor = ttk.Entry(frame_cadastro, width=30)
+        self.entry_setor.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
 
-        ttk.Label(frame_cadastro, text="Material:").grid(row=0, column=2, sticky="w", padx=5)
-        self.entry_material = ttk.Entry(frame_cadastro, width=28)
-        self.entry_material.grid(row=0, column=3, padx=5)
+        ttk.Label(frame_cadastro, text="Material:").grid(row=0, column=2, sticky="w", padx=(15, 5), pady=5)
+        self.entry_material = ttk.Entry(frame_cadastro, width=40)
+        self.entry_material.grid(row=0, column=3, padx=5, pady=5, sticky="ew")
 
-        ttk.Label(frame_cadastro, text="Quantidade:").grid(row=0, column=4, sticky="w", padx=5)
-        self.entry_qtd = ttk.Entry(frame_cadastro, width=10)
-        self.entry_qtd.grid(row=0, column=5, padx=5)
+        # Linha 1: Quantidade, Prioridade e Botão Cadastrar
+        ttk.Label(frame_cadastro, text="Quantidade:").grid(row=1, column=0, sticky="w", padx=5, pady=5)
+        self.entry_qtd = ttk.Entry(frame_cadastro, width=12)
+        self.entry_qtd.grid(row=1, column=1, padx=5, pady=5, sticky="w")
 
-        ttk.Label(frame_cadastro, text="Prioridade:").grid(row=0, column=6, sticky="w", padx=5)
+        frame_direita_cadastro = ttk.Frame(frame_cadastro)
+        frame_direita_cadastro.grid(row=1, column=3, sticky="e", pady=5)
+
+        ttk.Label(frame_direita_cadastro, text="Prioridade:").pack(side="left", padx=5)
         self.combo_prioridade = ttk.Combobox(
-            frame_cadastro,
+            frame_direita_cadastro,
             values=["Normal", "Alta"],
             state="readonly",
-            width=10,
+            width=12,
         )
         self.combo_prioridade.set("Normal")
-        self.combo_prioridade.grid(row=0, column=7, padx=5)
+        self.combo_prioridade.pack(side="left", padx=5)
 
         btn_cadastrar = ttk.Button(
-            frame_cadastro,
+            frame_direita_cadastro,
             text="Cadastrar",
             command=self._acao_cadastrar,
         )
-        btn_cadastrar.grid(row=0, column=8, padx=(10, 5))
+        btn_cadastrar.pack(side="left", padx=(15, 0))
+
+        frame_cadastro.columnconfigure(1, weight=1)
+        frame_cadastro.columnconfigure(3, weight=1)
 
         # --- 2. Barra de Pesquisa e Filtros ---
         frame_filtro = ttk.LabelFrame(self.root, text="Pesquisa e Filtros", padding=10)
