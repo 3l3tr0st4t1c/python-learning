@@ -76,4 +76,4 @@ class Database:
             )
 
     def fechar(self) -> None:
-        self.conn.close()
+        self.conn.close() 
