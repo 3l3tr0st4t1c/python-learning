@@ -37,8 +37,8 @@ SupriDesk/
 
 1. Clone este repositório ou baixe os arquivos para uma pasta local:
    ```bash
-   git clone <URL_DO_SEU_REPOSITORIO>
-   cd SupriDesk
+   git clone https://github.com/3l3tr0st4t1c/python-learning/edit/main/DevRapidoEmPython/Trabalho_final/
+   cd Trabalho_final
    ```
 
 2. Execute a aplicação principal:
