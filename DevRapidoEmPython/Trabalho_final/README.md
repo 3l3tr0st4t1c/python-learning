@@ -26,7 +26,7 @@ SupriDesk/
 ├── regras.py        # Validações e máquina de estados do atendimento
 ├── database.py      # Persistência SQLite com consultas parametrizadas
 ├── exp_csv.py       # Exportação do histórico para CSV
- README.md        # Documentação, testes e declaração de autoria
+└── README.md        # Documentação, testes e declaração de autoria
 
 ```
 
