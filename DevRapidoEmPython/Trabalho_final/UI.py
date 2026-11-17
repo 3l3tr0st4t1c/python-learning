@@ -22,11 +22,9 @@ class SupriDeskApp:
         self.root.protocol("WM_DELETE_WINDOW", self._ao_fechar)
 
     def _construir_interface(self) -> None:
-        # --- 1. Formulário de Cadastro (2 Linhas) ---
         frame_cadastro = ttk.LabelFrame(self.root, text="Nova Solicitação", padding=10)
         frame_cadastro.pack(fill="x", padx=10, pady=(10, 5))
 
-        # Linha 0: Setor e Material
         ttk.Label(frame_cadastro, text="Setor:").grid(row=0, column=0, sticky="w", padx=5, pady=5)
         self.entry_setor = ttk.Entry(frame_cadastro, width=30)
         self.entry_setor.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
@@ -35,7 +33,6 @@ class SupriDeskApp:
         self.entry_material = ttk.Entry(frame_cadastro, width=40)
         self.entry_material.grid(row=0, column=3, padx=5, pady=5, sticky="ew")
 
-        # Linha 1: Quantidade, Prioridade e Botão Cadastrar
         ttk.Label(frame_cadastro, text="Quantidade:").grid(row=1, column=0, sticky="w", padx=5, pady=5)
         self.entry_qtd = ttk.Entry(frame_cadastro, width=12)
         self.entry_qtd.grid(row=1, column=1, padx=5, pady=5, sticky="w")
@@ -63,7 +60,7 @@ class SupriDeskApp:
         frame_cadastro.columnconfigure(1, weight=1)
         frame_cadastro.columnconfigure(3, weight=1)
 
-        # --- 2. Barra de Pesquisa e Filtros ---
+        
         frame_filtro = ttk.LabelFrame(self.root, text="Pesquisa e Filtros", padding=10)
         frame_filtro.pack(fill="x", padx=10, pady=5)
 
@@ -93,7 +90,6 @@ class SupriDeskApp:
             command=self._acao_limpar_filtros,
         ).pack(side="left", padx=5)
 
-        # --- 3. Tabela (Treeview) ---
         frame_tabela = ttk.Frame(self.root, padding=(10, 5))
         frame_tabela.pack(fill="both", expand=True)
 
@@ -121,7 +117,6 @@ class SupriDeskApp:
         self.tabela.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
 
-        # --- 4. Botões de Ação de Atendimento e Exportação ---
         frame_acoes = ttk.Frame(self.root, padding=10)
         frame_acoes.pack(fill="x")
 
