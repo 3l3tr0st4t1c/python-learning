@@ -19,15 +19,17 @@ Projeto desenvolvido para a disciplina **Desenvolvimento Rápido de Aplicações
 
 ## Estrutura do Projeto
 
-```text
+``` text
 SupriDesk/
-├── main.py            # Interface desktop (Tkinter/ttk) e ponto de entrada da aplicação
-├── regras.py          # Camada de regras de negócio, validações e controle de fluxo de status
-├── database.py        # Camada de persistência SQLite e consultas SQL parametrizadas
-├── exportador.py      # Módulo responsável pela geração e exportação de arquivos CSV
-├── teste_rapido.py    # Script de verificação rápida das regras de negócio via assert
-└── README.md          # Documentação do projeto e roteiro de testes
+├── main.py          # Ponto de entrada (python3 main.py)
+├── UI.py            # Interface gráfica Tkinter/ttk
+├── regras.py        # Validações e máquina de estados do atendimento
+├── database.py      # Persistência SQLite com consultas parametrizadas
+├── exp_csv.py       # Exportação do histórico para CSV
+ README.md        # Documentação, testes e declaração de autoria
+
 ```
+
 
 *(O arquivo `solicitacoes.db` é criado automaticamente na raiz do projeto na primeira execução do sistema.)*
 
