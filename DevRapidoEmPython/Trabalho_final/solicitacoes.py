@@ -3,86 +3,77 @@ from pathlib import Path
 
 
 class Database:
+    def __init__(self, db_name: str = "solicitacoes.db") -> None:
+        base_dir = Path(__file__).resolve().parent
+        self.db_path = base_dir / db_name
+        self.conn = sqlite3.connect(self.db_path)
+        self._criar_tabela()
 
-
-
-    def __init__(self, caminho: str | Path = "usuarios.db") -> None:
-        self.conn = sqlite3.connect(caminho)
-        self.conn.execute("""
-            CREATE TABLE IF NOT EXISTS usuarios (
-                id INTEGER PRIMARY KEY,
-                nome TEXT NOT NULL,
-                email TEXT NOT NULL UNIQUE
+    def _criar_tabela(self) -> None:
+        with self.conn:
+            self.conn.execute(
+                """
+                CREATE TABLE IF NOT EXISTS pedidos (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    setor TEXT NOT NULL,
+                    material TEXT NOT NULL,
+                    quantidade INTEGER NOT NULL,
+                    prioridade TEXT NOT NULL,
+                    status TEXT NOT NULL,
+                    data_hora TEXT NOT NULL
+                )
+                """
             )
-        """)
-        self.conn.commit()
 
-    def listar(self) -> list[tuple[int, str, str]]:
+    def inserir(self, setor: str, material: str, quantidade: int, prioridade: str, status: str, data_hora: str,) -> int:
+        with self.conn:
+            cursor = self.conn.execute(
+                """
+                INSERT INTO pedidos (setor, material, quantidade, prioridade, status, data_hora)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (setor, material, quantidade, prioridade, status, data_hora),
+            )
+            return cursor.lastrowid
+
+    def listar(self, termo: str = "", status: str = "") -> list[tuple]:
+        query = """
+            SELECT id, setor, material, quantidade, prioridade, status, data_hora
+            FROM pedidos
+            WHERE 1=1
+        """
+        params: list[str] = []
+
+        if termo.strip():
+            query += " AND (setor LIKE ? OR material LIKE ?)"
+            like_termo = f"%{termo.strip()}%"
+            params.extend([like_termo, like_termo])
+
+        if status.strip() and status != "Todos":
+            query += " AND status = ?"
+            params.append(status.strip())
+
+        query += " ORDER BY id DESC"
+        cursor = self.conn.execute(query, params)
+        return cursor.fetchall()
+
+    def buscar_por_id(self, pedido_id: int) -> tuple | None:
         cursor = self.conn.execute(
-            "SELECT id, nome, email FROM usuarios ORDER BY nome"
+            """
+            SELECT id, setor, material, quantidade, prioridade, status, data_hora
+            FROM pedidos
+            WHERE id = ?
+            """,
+            (pedido_id,),
         )
-        return cursor.fetchall()
+        return cursor.fetchone()
 
-    def inserir(self, nome: str, email: str) -> None:
+    def atualizar_status(self, pedido_id: int, novo_status: str) -> None:
         with self.conn:
             self.conn.execute(
-                "INSERT INTO usuarios (nome, email) VALUES (?, ?)",
-                (nome, email),
+                "UPDATE pedidos SET status = ? WHERE id = ?",
+                (novo_status, pedido_id),
             )
-
-    def atualizar(self, usuario_id: int, nome: str, email: str) -> None:
-        with self.conn:
-            self.conn.execute(
-                "UPDATE usuarios SET nome = ?, email = ? WHERE id = ?",
-                (nome, email, usuario_id),
-            )
-
-    def excluir(self, usuario_id: int) -> None:
-        with self.conn:
-            self.conn.execute(
-                "DELETE FROM usuarios WHERE id = ?", (usuario_id,)
-            )
-        
-    def pesquisar_termo(self,nome:str):
-        with self.conn:
-           cursor=self.conn.execute(
-                "SELECT id, nome,email WHERE nome LIKE ?",(f"%{nome}%",)
-            )
-        return cursor.fetchall()
 
     def fechar(self) -> None:
         self.conn.close()
-
-
-bancodir=Path(__file__).resolve().parent/"DB"
-bancodir.mkdir(exist_ok=True)
-
-class Banco:
-    
-
-    def __init__(self):
-        
-        self.conexao=sqlite3.connect(bancodir/"solicitacoes.db")
-        self.cursor = self.conexao.cursor()
-        try:
-                self.cursor.execute(
-                """CREATE TABLE IF NOT EXISTS pedidos (
-                    id PRIMARY KEY,
-                    setor TEXT NOT NULL,
-                    material TEXT NOT NULL,
-                    qtd INTEGER NOT NULL,
-                    prio BOOLEAN NOT NULL
-                )
-            """
-            )
-                self.conexao.commit()
-        except sqlite3.Error as e:
-            print(f"Erro no banco de dados ao criar, {e}!")
-
-
-
-
-    def update(self):
-        self.cursor.execute (
-            with
-        )
